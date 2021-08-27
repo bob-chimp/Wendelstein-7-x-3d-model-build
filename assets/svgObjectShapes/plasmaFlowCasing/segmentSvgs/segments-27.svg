@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="segments" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="300px" height="200px" viewBox="0 0 300 200" enable-background="new 0 0 300 200" xml:space="preserve">
+<g id="degree270">
+	<path fill="#808080" d="M287.8,82.7l-57.6,13.2c6.1,2.6,12.8,4.1,19.8,4.1C265.1,100,278.6,93.3,287.8,82.7z"/>
+	<path fill="#808080" d="M246.5,99.9l-44.2-34.8C208.4,84.3,225.7,98.4,246.5,99.9z"/>
+	<path fill="#808080" d="M208.2,77.4V22.7C203,30.5,200,39.9,200,50S203,69.5,208.2,77.4z"/>
+	<path fill="#808080" d="M202.4,34.7l44.2-34.6C225.8,1.5,208.5,15.6,202.4,34.7z"/>
+	<path fill="#808080" d="M250,0c-7,0-13.8,1.5-19.8,4.1L287.6,17C278.4,6.6,265,0,250,0z"/>
+	<path fill="#808080" d="M300,50c0-3.6-0.4-7.2-1.1-10.6l-26.4,55.3C288.8,86.4,300,69.5,300,50z"/>
+	<circle fill="#808080" cx="250" cy="50" r="6.1"/>
+	<circle fill="#808080" cx="250" cy="73.2" r="6.1"/>
+	<circle fill="#808080" cx="270.1" cy="38.4" r="6.1"/>
+	<circle fill="#808080" cx="229.9" cy="38.4" r="6.1"/>
+	<path fill="#808080" d="M300,50c0-19.5-11.2-36.5-27.6-44.7L299,59.9C299.7,56.7,300,53.4,300,50z"/>
+	<rect x="0" y="190" fill="#808080" width="300" height="10"/>
+</g>
+</svg>
