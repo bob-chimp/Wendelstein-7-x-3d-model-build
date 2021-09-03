@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wendelstein 7-X :: A DaZ/BoB production</title>
+</head>
+<body>
+    <div style="text-align : center">
+        <object data="./CIRCaNIMmath.svg" onload="item_ref = new svg_snapshot(event.target, 30, 1, 3)"></object><br/><br/>
+        <button onclick="item_ref.make_step(0, 0)">ANIMATE! and MAKE snapshots from this SVG!</button>
+    </div>
+
+    <div id="image_stack" class="_aa_image_stack">
+    </div>
+
+    
+
+    <script>
+    /* uniformly named URL object */
+    var DOMURL = window.URL || window.webkitURL || window;
+
+    /* our snapshotting class */
+    function svg_snapshot(svg_ref, fps, seconds, correction) {
+
+        var self = this;
+
+        /* DOM object element */
+        this.svg_ref = svg_ref;
+
+        /* svg xml root */
+        this.svg_root = svg_ref.contentDocument.documentElement;
+
+        /* frames per second */
+        this.fps = fps;
+
+        /* total animation duration in seconds */
+        this.seconds = seconds;
+
+        /* frame msec correction (to fix getComputedStyle bug which shifts a little animation) */
+        this.correction = correction;
+
+        /* list of possible elements (it probably not complete) */
+        this.elements = ['path', 'circle', 'g'];
+
+        /* list of possible styles (it probably not complete) */
+        this.styleKeys = ['d', 'fill', 'fill-opacity', 'stroke', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-misterlimit', 'stroke-opacity', 'stroke-width', 'opacity', 'transform'];
+
+        this.svg_element_list = {};
+
+        /* load specific element lists from svg */
+        this.elements.forEach(function(elementName) {
+
+            var sf, els = self.svg_root.getElementsByTagName(elementName);
+
+            self.svg_element_list[elementName] = [];
+
+            for (sf = 0; sf < els.length; sf++) {
+                self.svg_element_list[elementName].push({
+                    "ref": els.item(sf),
+                    "style": null
+                });
+            }
+        });
+
+        this.toggle_pause = function(flag) {
+            var self = this;
+
+            /* pause and save computed style when paused */
+            this.elements.forEach(function(elementName) {
+                self.svg_element_list[elementName].forEach(function(c) {
+                    c["ref"].style.animationPlayState = flag ? "paused" : "";
+                    c["style"] = flag ? getComputedStyle(c["ref"]) : null;
+                });
+            });
+        };
+
+        this.toggle_pause(true);
+
+        this.make_step = function(step) {
+
+            /* pause for snapshot */
+            this.toggle_pause(true);
+
+            if (step > this.fps * this.seconds) {
+                // animation ended
+                return false;
+            }
+
+            /* save object reference */
+            var self = this;
+
+            /* capture snapped svg xml string */
+            var xml_data = this.svg_root.outerHTML;
+
+            /* parse snapped svg frame as object DOM structure */
+            var svg_xml = (new DOMParser()).parseFromString(xml_data, "text/xml");
+
+            /* remove style elements (it may damage snapshotted svg and will be rewritten imidietly by inline styles) */
+            var sf, styleEls = svg_xml.getElementsByTagName('style');
+
+            for (sf = styleEls.length - 1; sf >= 0; sf--) {
+                styleEls[sf].parentNode.removeChild(styleEls[sf]);
+            }
+
+            /* loop trough possible elements and copy */
+            this.elements.forEach(function(elementName) {
+
+                /* capture the processed style */
+                /* paths in snapped svg */
+                var elsSnap = svg_xml.getElementsByTagName(elementName);
+
+                for (var sf = 0; sf < self.svg_element_list[elementName].length; sf++) {
+                    var cStyle = self.svg_element_list[elementName][sf]["style"];
+
+                    /* enforce computed styles state */
+                    self.styleKeys.forEach(function(stKey) {
+                        elsSnap[sf].style[stKey] = cStyle.getPropertyValue(stKey);
+                    });
+                }
+            });
+
+            /* save as blob with a help of XMLserializer (using object DOM structure) */
+            var svg_data = new Blob([(new XMLSerializer()).serializeToString(svg_xml)], {type: 'image/svg+xml'});
+
+            /* create data url (creates browsers interal blob: data link) */
+            var data_url = DOMURL.createObjectURL(svg_data);
+
+            /* create bitmap */
+            var img = new Image();
+
+            /* mount load process */
+            img.onload = function() {
+
+                self.make_step_next(step, this);
+
+            };
+
+            /* set image url */
+            img.src = data_url;
+
+        };
+
+        this.make_step_next = function(step, img) {
+            var self = this;
+
+            /* create canvas */
+            var canvas = document.createElement("canvas");
+
+            canvas.setAttribute("width", this.svg_ref.clientWidth);
+            canvas.setAttribute("height", this.svg_ref.clientHeight);
+
+            canvas.style.border = "1px solid black";
+
+            /* get canvas 2d contextr */
+            var ctx = canvas.getContext('2d');
+
+            /* drav loaded image onto it */
+            ctx.drawImage(img, 0, 0);
+
+            /* here we can get dataURL (base64 encoded url with image content) */
+            var dataURL = canvas.toDataURL('image/png');
+
+            /* and here you can do whatever you want - send image by ajax (that base64 encoded url which you can decode on serverside) or draw somewhere on page */
+            var finalImg = document.createElement("IMG");
+
+            finalImg.style.border = "1px solid black";
+
+            /* add frame number to image alt */
+            /* it might represent file name etc. */
+            var frameId = "000" + step;
+            finalImg.alt = "frame" + frameId.substr(frameId.length - 3);
+
+            finalImg.onload = function() {
+                document.getElementById("image_stack").appendChild(finalImg);
+
+                self.make_step_go(step + 1);
+            };
+
+            finalImg.src = dataURL;
+        };
+
+        this.make_step_go = function(step) {
+            var self = this;
+            var interval = 1000 / this.fps - this.correction; // one frame interval
+
+            setTimeout(function() {
+                self.make_step(step);
+            }, interval);
+
+            /* let animation continue - before image is loaded, the animation is paused - by this is achieved perfect timing in this serial process */
+            this.toggle_pause(false);
+        };
+    }
+
+    /* usage - parameters: SVG DOM ref, frames per second, duration in seconds */
+    var item_ref = null;
+
+    </script>
+        <style type="text/css">
+
+            ._aa_image_stack { margin-top : 20px;text-align : center; }
+            ._aa_image_stack img { margin-right : 10px;margin-bottom : 10px;display : inline-block; }
+
+        </style>
+</body>
+</html>

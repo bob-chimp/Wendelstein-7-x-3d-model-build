@@ -8,6 +8,7 @@ html,
 body
 {
     overflow: hidden;
+    background-color: #333333;
 }
 
 .webgl
@@ -16,4 +17,9 @@ body
     top: 0;
     left: 0;
     outline: none;
+}
+
+svg
+{
+    display: none;
 }

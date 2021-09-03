@@ -1,0 +1,103 @@
+{
+	"metadata": {
+		"version": 4.5,
+		"type": "Object",
+		"generator": "Object3D.toJSON"
+	},
+	"geometries": [
+		{
+			"uuid": "3C64B5E7-3E0F-4F5B-AC06-8AD2BCD9D257",
+			"type": "CylinderGeometry",
+			"radiusTop": 1,
+			"radiusBottom": 1,
+			"height": 1,
+			"radialSegments": 32,
+			"heightSegments": 1,
+			"openEnded": false,
+			"thetaStart": 0,
+			"thetaLength": 6.283185307179586
+		},
+		{
+			"uuid": "5A7C6DA3-B7A4-4F0E-8D53-863EDCBB61D3",
+			"type": "BoxGeometry",
+			"width": 4,
+			"height": 1,
+			"depth": 2,
+			"widthSegments": 1,
+			"heightSegments": 1,
+			"depthSegments": 1
+		}],
+	"materials": [
+		{
+			"uuid": "17D018D5-B7DA-4CAA-9FB0-72DE1048FE94",
+			"type": "MeshPhongMaterial",
+			"color": 16777215,
+			"emissive": 8388608,
+			"specular": 1118481,
+			"shininess": 30,
+			"reflectivity": 1,
+			"refractionRatio": 0.98,
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true,
+			"colorWrite": true,
+			"stencilWrite": false,
+			"stencilWriteMask": 255,
+			"stencilFunc": 519,
+			"stencilRef": 0,
+			"stencilFuncMask": 255,
+			"stencilFail": 7680,
+			"stencilZFail": 7680,
+			"stencilZPass": 7680,
+			"wireframe": true
+		},
+		{
+			"uuid": "748348A4-F5EC-4B13-9E11-8DB3D50D761A",
+			"type": "MeshStandardMaterial",
+			"color": 16777215,
+			"roughness": 1,
+			"metalness": 0,
+			"emissive": 0,
+			"envMapIntensity": 1,
+			"refractionRatio": 0.98,
+			"depthFunc": 3,
+			"depthTest": true,
+			"depthWrite": true,
+			"colorWrite": true,
+			"stencilWrite": false,
+			"stencilWriteMask": 255,
+			"stencilFunc": 519,
+			"stencilRef": 0,
+			"stencilFuncMask": 255,
+			"stencilFail": 7680,
+			"stencilZFail": 7680,
+			"stencilZPass": 7680,
+			"wireframe": true
+		}],
+	"object": {
+		"uuid": "516E827A-AD4C-4AB0-A53B-8B9F2E925454",
+		"type": "Group",
+		"name": "Group",
+		"layers": 1,
+		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"children": [
+			{
+				"uuid": "376EC594-5959-4323-AE8E-B069620A4B67",
+				"type": "Mesh",
+				"name": "Cylinder",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,2,0,0,1],
+				"geometry": "3C64B5E7-3E0F-4F5B-AC06-8AD2BCD9D257",
+				"material": "17D018D5-B7DA-4CAA-9FB0-72DE1048FE94"
+			},
+			{
+				"uuid": "F51125B8-4452-4FBE-9B3A-AD0CCBA5C0F2",
+				"type": "Mesh",
+				"name": "Box",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,1],
+				"geometry": "5A7C6DA3-B7A4-4F0E-8D53-863EDCBB61D3",
+				"material": "748348A4-F5EC-4B13-9E11-8DB3D50D761A"
+			}]
+	}
+}
